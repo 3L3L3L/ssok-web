@@ -6,7 +6,8 @@ import {
   CheckCircle2, Lock, ArrowLeft, 
   FileText, Building2, GraduationCap, UserCheck, Briefcase,
   CalendarClock, ShieldAlert, Wallet, RefreshCcw, Quote,
-  EyeOff, UserSearch, ThumbsUp, CalendarRange, Cpu, Users
+  EyeOff, UserSearch, ThumbsUp, CalendarRange, Cpu, Users,
+  Zap, BellRing, UserPlus
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -33,7 +34,7 @@ export default function LandingPage() {
     {
       name: "이OO 회원님", info: "30대 초반 / 전문직",
       img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
-      text: "결정사의 기계적인 스펙 매칭에 지쳤었는데, 담당 매니저님이 제 가치관과 대화 코드를 파악해서 소개해주셨어요. 무엇보다 제 사진이 앱에 불특정 다수에게 유출되지 않는다는 점이 제일 안심됐습니다."
+      text: "결정사의 기계적인 스펙 매칭에 지쳤었는데, 단계별 전담 매니저분들이 제 가치관과 대화 코드를 파악해서 소개해주셨어요. 무엇보다 제 사진이 앱에 불특정 다수에게 유출되지 않는다는 점이 제일 안심됐습니다."
     },
     {
       name: "김OO 회원님", info: "30대 중반 / IT 사업가",
@@ -48,12 +49,12 @@ export default function LandingPage() {
     {
       name: "최OO 회원님", info: "30대 초반 / 공기업",
       img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=150",
-      text: "일반 데이팅 앱은 가벼운 만남이 많아 꺼려졌는데, SSOK은 진지한 만남을 원하시는 분들만 모여있어 신뢰가 갔습니다. 매니저님이 중간에서 조율해주시니 거절의 부담도 없고 너무 편안했어요."
+      text: "밤늦게 알람이 울리지 않고, 딱 정해진 시간에만 호감을 확인할 수 있는 시스템이 정말 배려 깊다고 느꼈어요. VIP 매니저님이 등판하는 순간은 정말 기분 좋은 서프라이즈였습니다."
     },
     {
       name: "정OO 회원님", info: "30대 후반 / 금융권",
       img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150",
-      text: "지인 소개도 한계가 있고, 결혼정보회사는 부담스러웠던 찰나에 알게 되었습니다. 철저한 신원 인증 시스템과 프라이빗한 진행 방식 덕분에 온전히 상대방과의 대화에만 집중할 수 있었습니다."
+      text: "지인 소개도 한계가 있고, 결혼정보회사는 부담스러웠던 찰나에 알게 되었습니다. 철저한 인증과 각 단계별 전문가들의 프라이빗한 진행 방식 덕분에 온전히 상대방과의 대화에만 집중할 수 있었습니다."
     }
   ];
 
@@ -74,11 +75,11 @@ export default function LandingPage() {
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E63] to-[#FF8FA3]">수준이 맞는 인연</span>을 만나세요.
         </h1>
         <p className="text-[16px] md:text-[20px] text-[#8C7A7D] max-w-2xl mx-auto mb-12 leading-[1.7] break-keep font-medium">
-          누구나 볼 수 있는 뻔한 프로필, 무의미한 스와이프에 지치셨나요?<br className="hidden md:block" />
-          SSOK은 전담 매니저가 당신의 취향과 수준을 분석하여<br className="hidden md:block"/>검증된 단 한 명을 큐레이팅합니다.
+          단순한 자동 매칭이 아닙니다. 안내부터 큐레이션, VIP 케어까지<br className="hidden md:block" />
+          분야별 전문 매니저 팀이 협업하여 당신의 결에 맞는 단 한 명을 찾아드립니다.
         </p>
         <button onClick={goToApp} className="bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white px-10 py-4 md:px-12 md:py-5 rounded-full text-[16px] md:text-[18px] font-bold shadow-[0_8px_25px_rgb(255,46,99,0.3)] hover:-translate-y-1 transition-all flex items-center justify-center group w-full sm:w-auto">
-          매니저 상담 신청하기
+          전담 팀 상담 신청하기
           <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
         </button>
       </section>
@@ -209,42 +210,44 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 상세페이지 라우팅 카드 */}
+      {/* 상세페이지 라우팅 카드 (SOP 반영 업데이트) */}
       <section className="py-28 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20">
             <h2 className="text-[32px] md:text-[44px] font-black text-[#4A3B3D] tracking-tight mb-5">
-              오직 <span className="text-[#FF2E63]">SSOK</span>에서만 가능한<br className="md:hidden"/> 프리미엄 서비스
+              분야별 <span className="text-[#FF2E63]">전문 매니저 팀</span>의 시너지
             </h2>
-            <p className="text-[#8C7A7D] text-[16px] md:text-[18px]">원하시는 항목을 클릭하여 자세한 시스템을 확인해 보세요.</p>
+            <p className="text-[#8C7A7D] text-[16px] md:text-[18px]">단 한 명의 알바가 아닌, 각 단계별 전문가가 당신의 매칭을 전담합니다.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div onClick={() => navigateTo('verification')} className="bg-white rounded-[2rem] p-8 md:p-10 border border-[#F0EBEB] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
               <div>
                 <BadgeCheck className="w-12 h-12 text-rose-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">상위 1% 신원 검증</h3>
-                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">직업, 학력, 자산 등 SSOK만의 까다로운 5단계 서류 검증을 통과한 확실한 분들만 모십니다.</p>
+                <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">전담 가입/검증 팀</h3>
+                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">안내 전담 매니저가 상위 1% 서류 검증을 돕고, 통과한 분들만 매칭 파이프라인으로 안전하게 인도합니다.</p>
               </div>
               <div className="w-full bg-[#FFF5F7] text-[#FF2E63] py-4 rounded-xl font-bold flex items-center justify-center text-[16px] group-hover:bg-[#FF2E63] group-hover:text-white transition-colors duration-300">
                 검증 시스템 자세히 보기 <ArrowRight className="w-5 h-5 ml-1.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
+            
             <div onClick={() => navigateTo('manager')} className="bg-white rounded-[2rem] p-8 md:p-10 border border-[#F0EBEB] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
               <div>
-                <Heart className="w-12 h-12 text-rose-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">V.I.P 전담 매니저</h3>
-                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">당신의 취향과 살아온 결까지 파악하여, 기계적인 매칭이 아닌 진짜 인연을 1:1로 찾아드립니다.</p>
+                <UserSearch className="w-12 h-12 text-rose-400 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">맞춤 큐레이션 팀</h3>
+                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">상대방이 회원님을 '이상형 조건'으로 찾고 있을 때, 추천 매니저가 선제적으로 프로필을 쏙 뽑아 제안합니다.</p>
               </div>
               <div className="w-full bg-[#FFF5F7] text-[#FF2E63] py-4 rounded-xl font-bold flex items-center justify-center text-[16px] group-hover:bg-[#FF2E63] group-hover:text-white transition-colors duration-300">
                 매니저 시스템 자세히 보기 <ArrowRight className="w-5 h-5 ml-1.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
+            
             <div onClick={() => navigateTo('membership')} className="bg-white rounded-[2rem] p-8 md:p-10 border border-[#F0EBEB] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer">
               <div>
-                <CalendarClock className="w-12 h-12 text-rose-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">리스크 제로 멤버십</h3>
-                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">가입비 없이 무료로 프로필을 받고, 상호 호감이 확인된 '만남 확정' 시에만 비용이 발생합니다.</p>
+                <Star className="w-12 h-12 text-rose-400 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">VIP 전담 컨시어지</h3>
+                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">나를 콕 집어 호감을 표시한 결정적 순간, VIP 매니저가 등판하여 최종 성사와 일정 조율을 책임집니다.</p>
               </div>
               <div className="w-full bg-[#FFF5F7] text-[#FF2E63] py-4 rounded-xl font-bold flex items-center justify-center text-[16px] group-hover:bg-[#FF2E63] group-hover:text-white transition-colors duration-300">
                 이용 안내 및 멤버십 보기 <ArrowRight className="w-5 h-5 ml-1.5 group-hover:translate-x-1 transition-transform" />
@@ -313,21 +316,21 @@ export default function LandingPage() {
   );
 
   // ==========================================
-  // 3️⃣ 매니저 시스템 상세 페이지
+  // 3️⃣ 매니저 시스템 상세 페이지 (SOP 반영)
   // ==========================================
   const renderManager = () => (
     <div className="pt-36 pb-28 px-6 max-w-5xl mx-auto animate-in slide-in-from-right-8 duration-500">
       <div className="text-center mb-20">
         <div className="inline-flex items-center px-4 py-1.5 bg-[#FFF0F2] text-[#FF2E63] rounded-full text-[13px] font-bold mb-6">
-          <Heart className="w-4 h-4 mr-2" /> SSOK Private Matchmaker
+          <Heart className="w-4 h-4 mr-2" /> Specialized Matchmaker Team
         </div>
         <h1 className="text-[36px] md:text-[56px] font-black text-[#4A3B3D] leading-[1.2] mb-6 tracking-tight break-keep">
           기계는 사람의 마음을 읽을 수 없습니다.<br />
-          <span className="text-[#FF2E63]">V.I.P 전담 매니저 시스템</span>
+          <span className="text-[#FF2E63]">단계별 전문 매니저 시스템</span>
         </h1>
         <p className="text-[16px] md:text-[18px] text-[#8C7A7D] leading-[1.7] break-keep font-medium max-w-2xl mx-auto">
           말투, 웃음소리, 연애 가치관, 살아온 환경까지.<br className="hidden md:block"/>
-          수천 쌍을 매칭해본 베테랑 매니저의 '안목'으로 당신만의 단 한 명을 찾아드립니다.
+          수천 쌍을 매칭해본 베테랑 매니저 팀이 각자의 전문 분야에서 협업하여 단 한 명을 찾아드립니다.
         </p>
       </div>
 
@@ -345,39 +348,39 @@ export default function LandingPage() {
           </div>
           <div className="pt-4 md:pt-0 md:pl-4">
             <Users className="w-12 h-12 text-[#FF2E63] mb-6" />
-            <h3 className="text-[24px] font-black mb-4 text-white">SSOK V.I.P 매니저 큐레이션</h3>
+            <h3 className="text-[24px] font-black mb-4 text-white">SSOK 분야별 전문가 큐레이션</h3>
             <ul className="space-y-4 text-[16px] text-white/90 leading-relaxed break-keep font-medium">
-              <li className="flex items-start"><CheckCircle2 className="w-5 h-5 text-[#FF2E63] shrink-0 mr-3 mt-0.5" /> <span>인터뷰를 통해 회원님의 성향과 연애 스타일을 깊이 있게 파악합니다.</span></li>
-              <li className="flex items-start"><CheckCircle2 className="w-5 h-5 text-[#FF2E63] shrink-0 mr-3 mt-0.5" /> <span>수많은 풀(Pool) 중에서 매니저가 고심하여 가장 잘 맞는 1명을 선별합니다.</span></li>
-              <li className="flex items-start"><CheckCircle2 className="w-5 h-5 text-[#FF2E63] shrink-0 mr-3 mt-0.5" /> <span>상대방의 외모 분위기, 취미의 결, 성격의 장단점까지 종합적으로 고려합니다.</span></li>
+              <li className="flex items-start"><CheckCircle2 className="w-5 h-5 text-[#FF2E63] shrink-0 mr-3 mt-0.5" /> <span>인터뷰를 통해 회원님의 성향과 연애 스타일을 안내 매니저가 파악합니다.</span></li>
+              <li className="flex items-start"><CheckCircle2 className="w-5 h-5 text-[#FF2E63] shrink-0 mr-3 mt-0.5" /> <span>추천 매니저가 매칭 풀(Pool) 안에서 서로의 조건이 완벽히 부합할 때만 선별합니다.</span></li>
+              <li className="flex items-start"><CheckCircle2 className="w-5 h-5 text-[#FF2E63] shrink-0 mr-3 mt-0.5" /> <span>외모 분위기, 취미의 결, 성격의 장단점까지 1:1로 종합 분석하여 제안합니다.</span></li>
             </ul>
           </div>
         </div>
       </div>
 
-      <h2 className="text-[28px] md:text-[36px] font-black text-center text-[#4A3B3D] mb-12 tracking-tight">매니저가 제공하는 3가지 프라이빗 케어</h2>
+      <h2 className="text-[28px] md:text-[36px] font-black text-center text-[#4A3B3D] mb-12 tracking-tight">전문 매니저가 제공하는 3가지 프라이빗 케어</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
           <UserSearch className="w-12 h-12 text-rose-400 mb-6" />
-          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"딥(Deep) 인터뷰"</h3>
-          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">본인도 몰랐던 진짜 원하는 배우자상/연인상을 함께 찾아갑니다.</p>
+          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"맞춤 타겟 큐레이션"</h3>
+          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">단순한 랜덤 추천이 아닙니다. 추천 매니저가 상대방의 이상형 조건에 회원님이 부합할 때만 프로필을 발송하여 수락률을 극대화합니다.</p>
         </div>
         <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
           <ThumbsUp className="w-12 h-12 text-rose-400 mb-6" />
-          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"거절의 부담 제로"</h3>
-          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">제안, 수락, 거절의 모든 의사는 매니저가 정중하게 대신 전달합니다.</p>
+          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"VIP 바톤터치 시스템"</h3>
+          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">나를 콕 집어 선택(YES)한 사람이 나타난 결정적 순간, 특별 배정된 VIP 매니저가 등판하여 가장 기분 좋은 소식을 전해드립니다.</p>
         </div>
         <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
-          <CalendarRange className="w-12 h-12 text-rose-400 mb-6" />
-          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"A to Z 컨시어지"</h3>
-          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">골치 아픈 일정 조율과 첫 만남 장소 예약까지 매니저가 세팅해 드립니다.</p>
+          <BellRing className="w-12 h-12 text-rose-400 mb-6" />
+          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"성별 맞춤 알림 케어"</h3>
+          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">남성 회원에겐 도파민 넘치는 즉각적인 매칭 소식을, 여성 회원에겐 일상 보호를 위해 도착한 호감을 모아 **저녁 8시 일괄 알림**을 제공합니다.</p>
         </div>
       </div>
     </div>
   );
 
   // ==========================================
-  // 4️⃣ 이용 안내 및 멤버십 상세 페이지 (숫자 디자인 분리 적용)
+  // 4️⃣ 이용 안내 및 멤버십 상세 페이지 (SOP 반영)
   // ==========================================
   const renderMembership = () => (
     <div className="pt-36 pb-28 px-6 max-w-5xl mx-auto animate-in slide-in-from-right-8 duration-500">
@@ -385,21 +388,21 @@ export default function LandingPage() {
         SSOK Process & Guarantee
       </div>
       <h1 className="text-[32px] md:text-[52px] font-black text-[#4A3B3D] leading-[1.2] mb-8 tracking-tight break-keep">
-        매칭 성사 시에만 결제하는<br />
+        마찰 제로 프로세스,<br />
         <span className="text-[#FF2E63]">합리적인 VIP 멤버십</span>
       </h1>
       <p className="text-[16px] md:text-[18px] text-[#8C7A7D] mb-20 leading-[1.7] break-keep font-medium">
         가입비 명목으로 선결제를 요구하는 결혼정보회사와 다릅니다.<br className="hidden md:block"/>
-        SSOK은 철저한 후불제 매칭을 지향하며, 진행 과정은 투명하게 공개됩니다.
+        초기 가입 시 여러 명을 추가하게 만드는 귀찮은 숙제 없이, 보상이 주어지는 순간에만 다음 단계로 이동합니다.
       </p>
 
-      {/* 프로세스 스텝 */}
+      {/* 프로세스 스텝 (SOP 흐름 완벽 매칭) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
         {[
-          { step: "STEP 01", title: "무료 상담 및 가입 심사", desc: "지원서를 제출하면 매니저가 연락을 드려 프로필 작성과 서류 인증을 돕습니다. (비용 X)" },
-          { step: "STEP 02", title: "상대방 프로필 제안", desc: "검증이 완료되면, 이상형에 가장 부합하는 이성의 프로필을 매니저가 직접 제안해 드립니다." },
-          { step: "STEP 03", title: "상호 수락 시 매칭 성사", desc: "제안받은 프로필을 보고 만남을 수락합니다. 상대방도 수락할 경우에만 매칭이 성사됩니다." },
-          { step: "STEP 04", title: "멤버십 결제 및 만남", desc: "매칭이 성사되면 정해진 멤버십(티켓) 비용을 결제하고, 매니저가 약속 일정을 조율해 드립니다." }
+          { step: "STEP 01", title: "초기 안내 및 가입 유도", desc: "안내 매니저가 무료로 프로필 작성을 돕고 가입자 인증을 진행합니다. 작성 완료 즉시 다음 단계의 추천 전담 매니저로 연결해 드립니다." },
+          { step: "STEP 02", title: "조건 맞춤 프로필 제안", desc: "추천 매니저가 상대방의 '이상형 조건'을 분석하여, 부합하는 유저를 매일 엄선해 선제적으로 프로필을 발송합니다." },
+          { step: "STEP 03", title: "결정적 순간, VIP 호감 알림", desc: "누군가 나를 직접 선택(YES)하면, VIP 전담 매니저가 흥분과 정중함을 담아 매칭 소식을 전해드리고 프로필을 오픈합니다." },
+          { step: "STEP 04", title: "동시 과금 및 만남 확정", desc: "다른 방으로 넘어가는 번거로움 없이, 최종 호감 수락을 받아낸 매니저를 통해 매칭 비용을 직접 결제하고 일정을 조율합니다." }
         ].map((item, idx) => (
           <div key={idx} className="bg-white p-8 md:p-10 rounded-3xl border border-[#F0EBEB] shadow-sm flex flex-col">
             <span className="text-[#FF2E63] font-black text-[14px] mb-3">{item.step}</span>
@@ -451,7 +454,7 @@ export default function LandingPage() {
       {/* 🚀 전 페이지 공통 하단 유도 (Bottom CTA) */}
       <section className="py-28 bg-gradient-to-b from-[#FFF5F7] to-[#FFF0F2] text-center px-6 border-t border-[#FFF0F2]">
         <h2 className="text-[32px] md:text-[46px] font-black text-[#4A3B3D] mb-6 tracking-tight">리스크 없이, 진짜 인연을 만나세요</h2>
-        <p className="text-[16px] md:text-[20px] text-[#8C7A7D] mb-12 font-medium">가입비 0원. 지금 바로 무료 프로필 상담을 받아보세요.</p>
+        <p className="text-[16px] md:text-[20px] text-[#8C7A7D] mb-12 font-medium">가입비 0원. 전문 매니저 팀이 당신의 매칭을 위해 협업합니다.</p>
         <button onClick={goToApp} className="bg-gradient-to-r from-[#4A3B3D] to-[#322729] text-white px-12 py-5 md:px-14 md:py-6 rounded-full text-[18px] md:text-[20px] font-bold shadow-2xl hover:-translate-y-1 transition-all">
           SSOK 무료 가입 신청하기
         </button>
