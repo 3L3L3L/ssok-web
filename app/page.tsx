@@ -35,27 +35,28 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 💡 페이지 이동 함수 (에러 방지 안전망 추가)
   const navigateTo = (page: string) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      window.scrollTo(0, 0);
+    }
     setCurrentPage(page);
   };
 
-  // 📱 1. 인증번호 발송 요청 (ON/OFF 테스트 모드 지원)
+  // 📱 1. 인증번호 발송 요청
   const handleSendCode = async () => {
     if (formPhone.length < 10) {
       alert("올바른 휴대폰 번호를 입력해주세요.");
       return;
     }
-
-    // 💡 환경변수 스위치: 테스트 모드일 때 (문자 비용 절감)
     if (process.env.NEXT_PUBLIC_USE_SMS_AUTH !== 'true') {
       setIsCodeSent(true);
-      setVerifyCode('000000'); // 테스트용 번호 세팅
-      alert('인증번호 칸에 000000을 입력하거나 [인증확인]을 바로 눌러주세요.');
+      setVerifyCode('000000');
+      alert('테스트 모드입니다. 인증번호 칸에 000000을 입력하거나 [인증확인]을 바로 눌러주세요.');
       return;
     }
-
-    // 🔥 실제 운영 모드 (기존 앱 API 호출)
     try {
       const res = await fetch('https://ssok-app.vercel.app/api/send-sms', {
         method: 'POST',
@@ -75,18 +76,15 @@ export default function LandingPage() {
 
   // 📱 2. 인증번호 검증
   const handleVerifyCode = async () => {
-    // 💡 테스트 모드일 때
     if (process.env.NEXT_PUBLIC_USE_SMS_AUTH !== 'true') {
       if (verifyCode === '000000') {
         setIsVerified(true);
-        alert('인증이 완료되었습니다.');
+        alert('테스트 인증이 완료되었습니다.');
       } else {
         alert('인증번호가 일치하지 않습니다.');
       }
       return;
     }
-
-    // 🔥 실제 운영 모드 검증
     setIsVerifying(true);
     try {
       const res = await fetch('https://ssok-app.vercel.app/api/verify-sms', {
@@ -119,25 +117,21 @@ export default function LandingPage() {
       alert("휴대폰 번호 인증을 먼저 완료해 주세요.");
       return;
     }
-
     setIsSubmitting(true);
     try {
-      // 기존 ssok-app 의 에어테이블 연동 API로 데이터 쏘기
-      const res = await fetch('https://ssok-app.vercel.app/api/apply', {
+      const res = await fetch('/api/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formName,
           age: formAge,
-          gender: formGender === '남성' ? 'male' : 'female', // 앱 백엔드 규격에 맞춤
+          gender: formGender === '남성' ? 'male' : 'female',
           phone: formPhone,
           kakaoId: formKakao
         }),
       });
-
       if (res.ok) {
         alert("상담 신청이 완료되었습니다! 전담 매니저가 곧 연락드릴 예정입니다.");
-        // 제출 완료 후 초기화 및 메인 이동
         setFormName(''); setFormAge(''); setFormGender(null); setFormPhone(''); setFormKakao('');
         setIsCodeSent(false); setVerifyCode(''); setIsVerified(false);
         navigateTo('home');
@@ -186,6 +180,14 @@ export default function LandingPage() {
     { q: "결제 후 상대방이 잠수타거나 안 나오면 어떡하나요?", a: "결제 후 약속 당일 노쇼(No-show)나 7일 내 상대방의 일방적인 잠수 등 정상적인 만남이 이루어지지 않을 경우, 전액 환불 또는 1회 무료 재매칭을 보장해 드립니다." },
   ];
 
+  // 💡 줄바꿈 문제 해결을 위한 데이터 분리
+  const targetAudiences = [
+    { text: "데이팅 앱에 내 얼굴이 팔리는 게", highlight: "싫으신 분" },
+    { text: "직장/학교 지인을 마주칠까 봐", highlight: "걱정되시는 분" },
+    { text: "스펙뿐만 아니라 가치관, 결이 맞는 사람을", highlight: "찾고 싶은 분" },
+    { text: "결혼정보회사의 높은 가입비가", highlight: "부담스러우신 분" }
+  ];
+
   // ==========================================
   // 1️⃣ 메인 홈 화면
   // ==========================================
@@ -210,19 +212,17 @@ export default function LandingPage() {
         </button>
       </section>
 
+      {/* 🚀 줄바꿈(Typography Wrapping) 완벽 해결 섹션 */}
       <section className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-[28px] md:text-[40px] font-black text-center text-[#4A3B3D] mb-14 tracking-tight">이런 분들을 위해 만들었습니다</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[
-              "데이팅 앱에 내 얼굴이 팔리는 게 싫으신 분",
-              "직장/학교 지인을 마주칠까 봐 걱정되시는 분",
-              "스펙뿐만 아니라 가치관, 결이 맞는 사람을 찾고 싶은 분",
-              "결혼정보회사의 높은 가입비가 부담스러우신 분"
-            ].map((text, idx) => (
-              <div key={idx} className="flex items-center bg-[#FAFAFA] p-6 rounded-2xl border border-[#F0EBEB]">
+            {targetAudiences.map((item, idx) => (
+              <div key={idx} className="flex items-center bg-[#FAFAFA] p-6 rounded-2xl border border-[#F0EBEB] min-h-[96px]">
                 <CheckCircle2 className="w-6 h-6 text-rose-400 shrink-0 mr-4" />
-                <p className="text-[16px] md:text-[17px] font-bold text-[#4A3B3D] leading-snug break-keep">{text}</p>
+                <p className="text-[15.5px] md:text-[16.5px] font-bold text-[#4A3B3D] leading-[1.6] break-keep w-full">
+                  {item.text} <span className="whitespace-nowrap">{item.highlight}</span>
+                </p>
               </div>
             ))}
           </div>
@@ -232,6 +232,7 @@ export default function LandingPage() {
       <section className="py-24 bg-[#322729] text-white relative overflow-hidden">
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
+
         <div className="max-w-6xl mx-auto px-6 relative z-10 text-center">
           <ShieldAlert className="w-14 h-14 text-[#FF2E63] mx-auto mb-6" />
           <h2 className="text-[32px] md:text-[46px] font-black tracking-tight mb-6">
@@ -311,6 +312,7 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* 라우팅 카드 */}
       <section className="py-28 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20">
@@ -388,121 +390,49 @@ export default function LandingPage() {
         </h2>
         
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* 1. 이름 */}
           <div>
             <label className="block text-[15px] font-bold text-[#4A3B3D] mb-3">이름 <span className="text-[#FF2E63]">*</span></label>
-            <input 
-              type="text" 
-              placeholder="이름을 입력해주세요" 
-              value={formName} 
-              onChange={(e) => setFormName(e.target.value)}
-              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]"
-            />
+            <input type="text" placeholder="이름을 입력해주세요" value={formName} onChange={(e) => setFormName(e.target.value)} className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]" />
           </div>
-
-          {/* 2. 나이 */}
           <div>
             <label className="block text-[15px] font-bold text-[#4A3B3D] mb-3">나이 <span className="text-[#FF2E63]">*</span></label>
-            <input 
-              type="number" 
-              placeholder="숫자만 입력 (예: 31)" 
-              value={formAge} 
-              onChange={(e) => setFormAge(e.target.value)}
-              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]"
-            />
+            <input type="number" placeholder="숫자만 입력 (예: 31)" value={formAge} onChange={(e) => setFormAge(e.target.value)} className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]" />
           </div>
-
-          {/* 3. 성별 */}
           <div>
             <label className="block text-[15px] font-bold text-[#4A3B3D] mb-3">성별 <span className="text-[#FF2E63]">*</span></label>
             <div className="flex gap-4">
-              <button 
-                type="button"
-                onClick={() => setFormGender('남성')}
-                className={`flex-1 py-4 rounded-xl font-bold border transition-all ${formGender === '남성' ? 'border-[#FF2E63] text-[#FF2E63] bg-[#FFF0F2]' : 'border-[#E5E0E0] text-[#A69C9E] bg-[#FAFAFA] hover:bg-white'}`}
-              >
-                남성
-              </button>
-              <button 
-                type="button"
-                onClick={() => setFormGender('여성')}
-                className={`flex-1 py-4 rounded-xl font-bold border transition-all ${formGender === '여성' ? 'border-[#FF2E63] text-[#FF2E63] bg-[#FFF0F2]' : 'border-[#E5E0E0] text-[#A69C9E] bg-[#FAFAFA] hover:bg-white'}`}
-              >
-                여성
-              </button>
+              <button type="button" onClick={() => setFormGender('남성')} className={`flex-1 py-4 rounded-xl font-bold border transition-all ${formGender === '남성' ? 'border-[#FF2E63] text-[#FF2E63] bg-[#FFF0F2]' : 'border-[#E5E0E0] text-[#A69C9E] bg-[#FAFAFA] hover:bg-white'}`}>남성</button>
+              <button type="button" onClick={() => setFormGender('여성')} className={`flex-1 py-4 rounded-xl font-bold border transition-all ${formGender === '여성' ? 'border-[#FF2E63] text-[#FF2E63] bg-[#FFF0F2]' : 'border-[#E5E0E0] text-[#A69C9E] bg-[#FAFAFA] hover:bg-white'}`}>여성</button>
             </div>
           </div>
-
-          {/* 4. 휴대폰 번호 & 인증 시스템 */}
           <div>
             <label className="block text-[15px] font-bold text-[#4A3B3D] mb-3">휴대폰 번호 <span className="text-[#FF2E63]">*</span></label>
             <div className="flex gap-3 mb-3">
-              <input 
-                type="tel" 
-                placeholder="010-0000-0000" 
-                value={formPhone} 
-                onChange={(e) => setFormPhone(e.target.value)}
-                disabled={isVerified}
-                className="flex-1 p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E] disabled:bg-gray-100 disabled:text-gray-400"
-              />
-              <button 
-                type="button" 
-                onClick={handleSendCode}
-                disabled={isVerified}
-                className={`px-6 rounded-xl font-bold transition-colors shrink-0 ${isVerified ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#4A3B3D] text-white hover:bg-[#322729]'}`}
-              >
+              <input type="tel" placeholder="010-0000-0000" value={formPhone} onChange={(e) => setFormPhone(e.target.value)} disabled={isVerified} className="flex-1 p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E] disabled:bg-gray-100 disabled:text-gray-400" />
+              <button type="button" onClick={handleSendCode} disabled={isVerified} className={`px-6 rounded-xl font-bold transition-colors shrink-0 ${isVerified ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#4A3B3D] text-white hover:bg-[#322729]'}`}>
                 {isVerified ? "인증완료" : (isCodeSent ? "재발송" : "인증요청")}
               </button>
             </div>
-
-            {/* 인증번호 입력 칸 */}
             {isCodeSent && !isVerified && (
               <div className="flex gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                <input 
-                  type="text" 
-                  placeholder="인증번호 입력" 
-                  value={verifyCode}
-                  onChange={(e) => setVerifyCode(e.target.value)}
-                  className="flex-1 p-4 rounded-xl border border-[#FF2E63] bg-[#FFF0F2] text-[#FF2E63] font-bold outline-none placeholder:text-rose-300"
-                />
-                <button 
-                  type="button" 
-                  onClick={handleVerifyCode}
-                  disabled={isVerifying}
-                  className="px-6 rounded-xl bg-[#FF2E63] text-white font-bold hover:bg-[#E01E4D] transition-colors shrink-0 disabled:opacity-50"
-                >
+                <input type="text" placeholder="인증번호 입력" value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} className="flex-1 p-4 rounded-xl border border-[#FF2E63] bg-[#FFF0F2] text-[#FF2E63] font-bold outline-none placeholder:text-rose-300" />
+                <button type="button" onClick={handleVerifyCode} disabled={isVerifying} className="px-6 rounded-xl bg-[#FF2E63] text-white font-bold hover:bg-[#E01E4D] transition-colors shrink-0 disabled:opacity-50">
                   {isVerifying ? "확인중..." : "인증확인"}
                 </button>
               </div>
             )}
-            
-            {/* 인증 완료 시 노출 */}
             {isVerified && (
               <p className="text-green-500 text-[13px] font-bold flex items-center mt-2 pl-1 animate-in fade-in">
                 <CheckCircle2 className="w-4 h-4 mr-1.5" /> 본인 인증이 완료되었습니다.
               </p>
             )}
           </div>
-
-          {/* 5. 카카오톡 아이디 */}
           <div>
             <label className="block text-[15px] font-bold text-[#4A3B3D] mb-3">카카오톡 아이디 (선택)</label>
-            <input 
-              type="text" 
-              placeholder="카톡 아이디 입력" 
-              value={formKakao} 
-              onChange={(e) => setFormKakao(e.target.value)}
-              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]"
-            />
+            <input type="text" placeholder="카톡 아이디 입력" value={formKakao} onChange={(e) => setFormKakao(e.target.value)} className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]" />
           </div>
-
-          {/* 제출 버튼 */}
           <div className="pt-6">
-            <button 
-              type="submit" 
-              disabled={isSubmitting || !isVerified}
-              className="w-full bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white py-5 rounded-xl text-[18px] font-black shadow-lg hover:-translate-y-1 transition-all disabled:opacity-50 disabled:hover:translate-y-0"
-            >
+            <button type="submit" disabled={isSubmitting || !isVerified} className="w-full bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white py-5 rounded-xl text-[18px] font-black shadow-lg hover:-translate-y-1 transition-all disabled:opacity-50 disabled:hover:translate-y-0">
               {isSubmitting ? "전송 중..." : "상담 신청 완료하기"}
             </button>
             <p className="text-center text-[#A69C9E] text-[13px] mt-4">
@@ -514,8 +444,167 @@ export default function LandingPage() {
     </div>
   );
 
+  // ==========================================
+  // 2️⃣ 신원 검증 상세 페이지
+  // ==========================================
+  const renderVerification = () => (
+    <div className="pt-36 pb-28 px-6 max-w-5xl mx-auto animate-in slide-in-from-right-8 duration-500">
+      <div className="text-center mb-20">
+        <div className="inline-flex items-center px-4 py-1.5 bg-[#FFF0F2] text-[#FF2E63] rounded-full text-[13px] font-bold mb-6">
+          <BadgeCheck className="w-4 h-4 mr-2" /> SSOK Trust System
+        </div>
+        <h1 className="text-[36px] md:text-[56px] font-black text-[#4A3B3D] leading-[1.2] mb-6 tracking-tight break-keep">
+          단 하나의 거짓도 허용하지 않는<br />
+          <span className="text-[#FF2E63]">상위 1% 철벽 검증 시스템</span>
+        </h1>
+        <p className="text-[16px] md:text-[18px] text-[#8C7A7D] leading-[1.7] break-keep font-medium max-w-2xl mx-auto">
+          소개팅 앱의 허위 프로필, 결정사의 부풀려진 스펙에 지치셨나요?<br className="hidden md:block"/>
+          SSOK 전담 매니저팀은 국가 발급 증명서와 사원증 등 법적 효력이 있는 서류만을 취급하여 가장 확실하고 안전한 만남을 시작합니다.
+        </p>
+      </div>
+      <div className="bg-[#FAFAFA] border border-[#F0EBEB] rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 mb-24 shadow-sm">
+        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
+          <EyeOff className="w-10 h-10 text-rose-400" />
+        </div>
+        <div>
+          <h3 className="font-black text-[#4A3B3D] text-[20px] md:text-[24px] mb-3">제출하신 서류는 즉시 영구 파기됩니다.</h3>
+          <p className="text-[#8C7A7D] text-[15px] md:text-[16px] leading-[1.6] break-keep">
+            SSOK은 회원의 개인정보 보호를 최우선으로 합니다. 검증을 위해 제출하신 모든 민감 서류는 전담 안내 매니저의 <span className="font-bold text-[#FF2E63]">확인 즉시 시스템에서 영구적으로 파기</span>되며, 외부로 절대 유출되지 않으니 안심하세요.
+          </p>
+        </div>
+      </div>
+      <div className="relative">
+        <div className="absolute left-[2.5rem] md:left-1/2 top-0 bottom-0 w-[2px] bg-rose-100 -translate-x-1/2"></div>
+        {[
+          { icon: <UserCheck className="w-6 h-6 text-white"/>, title: "01. 본인 및 혼인 여부 인증", desc: "통신사 본인 인증을 통한 실명 확인은 물론, 혼인관계증명서(상세)를 필수적으로 검토하여 법적으로 완벽한 싱글(미혼/돌싱)임을 교차 검증합니다." },
+          { icon: <Briefcase className="w-6 h-6 text-white"/>, title: "02. 직장 및 직업 인증", desc: "명함만으로는 부족합니다. 사원증, 건강보험자격득실확인서, 재직증명서, 전문직 자격증명원 등 확실한 증빙 서류를 요구합니다." },
+          { icon: <GraduationCap className="w-6 h-6 text-white"/>, title: "03. 학력 인증", desc: "대학교 또는 대학원의 졸업증명서 원본 서류를 통해 프로필에 기재된 학력의 진위 여부를 꼼꼼하게 대조합니다." },
+          { icon: <Building2 className="w-6 h-6 text-white"/>, title: "04. 자산 및 소득 인증 (선택)", desc: "근로소득원천징수영수증, 부동산 등기부등본, 고급 차량등록증 등을 매니저에게 제출하여 '상위 1% 인증 배지'를 부여받을 수 있습니다." },
+          { icon: <FileText className="w-6 h-6 text-white"/>, title: "05. 리드 확보 및 토스", desc: "서류와 인터뷰를 통과하면 가입이 완료되며, 매칭을 위해 곧바로 2단계 추천 전담 매니저에게 안전하게 바톤을 넘깁니다." }
+        ].map((item, idx) => (
+          <div key={idx} className="relative flex flex-col md:flex-row items-center justify-between mb-16 last:mb-0 group">
+            <div className={`w-full md:w-[45%] bg-white p-8 rounded-3xl border border-[#F0EBEB] shadow-sm hover:shadow-xl hover:border-rose-200 transition-all z-10 pl-24 md:pl-8 ${idx % 2 === 0 ? 'md:order-1 md:text-right' : 'md:order-3 md:text-left'}`}>
+              <h3 className="font-black text-[20px] md:text-[22px] text-[#4A3B3D] mb-4">{item.title}</h3>
+              <p className="text-[15.5px] md:text-[16px] text-[#8C7A7D] leading-[1.7] break-keep">{item.desc}</p>
+            </div>
+            <div className="absolute left-[2.5rem] md:left-1/2 top-8 md:top-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-[#FF2E63] to-[#FF5C8A] border-4 border-white shadow-lg flex items-center justify-center -translate-x-1/2 -translate-y-1/2 z-20 group-hover:scale-110 transition-transform">
+              {item.icon}
+            </div>
+            <div className="hidden md:block w-[45%] md:order-2"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // ==========================================
+  // 3️⃣ 매니저 시스템 상세 페이지
+  // ==========================================
+  const renderManager = () => (
+    <div className="pt-36 pb-28 px-6 max-w-5xl mx-auto animate-in slide-in-from-right-8 duration-500">
+      <div className="text-center mb-20">
+        <div className="inline-flex items-center px-4 py-1.5 bg-[#FFF0F2] text-[#FF2E63] rounded-full text-[13px] font-bold mb-6">
+          <Heart className="w-4 h-4 mr-2" /> Expert Matchmaker System
+        </div>
+        <h1 className="text-[36px] md:text-[56px] font-black text-[#4A3B3D] leading-[1.2] mb-6 tracking-tight break-keep">
+          기계는 사람의 마음을 읽을 수 없습니다.<br />
+          <span className="text-[#FF2E63]">연애 코칭 전문가의 1:1 큐레이션</span>
+        </h1>
+        <p className="text-[16px] md:text-[18px] text-[#8C7A7D] leading-[1.7] break-keep font-medium max-w-2xl mx-auto">
+          말투, 웃음소리, 연애 가치관, 살아온 환경까지.<br className="hidden md:block"/>
+          수많은 성혼을 이끌어낸 베테랑 연애 전문가 팀이 내부 데이터베이스를 기반으로 완벽한 타겟팅 매칭을 진행합니다.
+        </p>
+      </div>
+
+      <div className="bg-[#322729] rounded-[3rem] p-10 md:p-16 text-white mb-24 shadow-xl overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+          <div className="border-b md:border-b-0 md:border-r border-white/10 pb-10 md:pb-0 md:pr-12">
+            <Zap className="w-12 h-12 text-[#FF2E63] mb-6" />
+            <h3 className="text-[24px] font-black mb-4 text-white">👨 남성 고객: 즉각적인 알림</h3>
+            <ul className="space-y-4 text-[16px] text-white/80 leading-relaxed break-keep">
+              <li>회원님을 '선택(YES)'한 여성이 생기면, VIP 매니저가 즉시 연락을 드려 가장 빠른 매칭 소식을 전해드립니다. 기다림 없는 매칭을 경험하세요.</li>
+            </ul>
+          </div>
+          <div className="pt-4 md:pt-0 md:pl-4">
+            <BellRing className="w-12 h-12 text-[#FF2E63] mb-6" />
+            <h3 className="text-[24px] font-black mb-4 text-white">👩 여성 고객: 프라이버시 맞춤 알림</h3>
+            <ul className="space-y-4 text-[16px] text-white/80 leading-relaxed break-keep">
+              <li>일상 중 무분별한 카톡 알람으로 인한 피로도를 막아드립니다. 조건에 맞는 분이 있을 때만 신중하게 선별하여 프로필을 전달해 드립니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 className="text-[28px] md:text-[36px] font-black text-center text-[#4A3B3D] mb-12 tracking-tight">연애 전문가가 제공하는 3가지 VIP 케어</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
+          <UserSearch className="w-12 h-12 text-rose-400 mb-6" />
+          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"협업 타겟팅 큐레이션"</h3>
+          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">단순한 무작위 전송이 아닙니다. 추천 매니저가 회원님과 완벽히 부합하는 조건을 가진 상대를 마스터 데이터로 분석하여 발송합니다.</p>
+        </div>
+        <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
+          <ThumbsUp className="w-12 h-12 text-rose-400 mb-6" />
+          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"거절의 부담 제로"</h3>
+          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">프로필을 제안받고 거절하기 껄끄러우신가요? 제안, 수락, 거절의 모든 과정은 담당 매니저가 정중하게 대신하여 전달합니다.</p>
+        </div>
+        <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
+          <CalendarRange className="w-12 h-12 text-rose-400 mb-6" />
+          <h3 className="font-black text-[#4A3B3D] text-[22px] mb-4">"특수 클로징 컨시어지"</h3>
+          <p className="text-[#8C7A7D] text-[15.5px] leading-[1.7] break-keep">서로 호감이 맞은 결정적 순간엔 VIP 전담 매니저가 등판하여 일정 조율과 만남 세팅을 완벽하게 마무리합니다.</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ==========================================
+  // 4️⃣ 이용 안내 및 멤버십 상세 페이지
+  // ==========================================
+  const renderMembership = () => (
+    <div className="pt-36 pb-28 px-6 max-w-5xl mx-auto animate-in slide-in-from-right-8 duration-500">
+      <div className="inline-flex items-center px-4 py-1.5 bg-[#FFF0F2] text-[#FF2E63] rounded-full text-[13px] font-bold mb-8">
+        SSOK Frictionless Process
+      </div>
+      <h1 className="text-[32px] md:text-[52px] font-black text-[#4A3B3D] leading-[1.2] mb-8 tracking-tight break-keep">
+        마찰 제로 시스템,<br />
+        <span className="text-[#FF2E63]">합리적인 VIP 멤버십</span>
+      </h1>
+      <p className="text-[16px] md:text-[18px] text-[#8C7A7D] mb-20 leading-[1.7] break-keep font-medium">
+        가입비 명목으로 선결제를 요구하는 결혼정보회사와 다릅니다.<br className="hidden md:block"/>
+        초기 가입 시 여러 명을 한꺼번에 친추하게 만드는 귀찮은 숙제 없이, 보상이 주어지는 순간에만 다음 단계로 이동합니다.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+        {[
+          { step: "STEP 01", title: "가입 유도 및 안내", desc: "안내 매니저의 도움을 받아 프로필을 작성합니다. 작성이 완료되면 곧바로 나에게 맞는 상대를 쏙 뽑아줄 '추천 전담 매니저' 단 1명만 연결해 드립니다." },
+          { step: "STEP 02", title: "데일리 맞춤 큐레이션", desc: "추천 매니저가 매일 엄선된 프로필을 발송합니다. '아무나 보내는 게 아니라, 회원님 조건을 이상형으로 찾는 분'들만 발굴하여 제안합니다." },
+          { step: "STEP 03", title: "결정적 순간, VIP 바톤터치", desc: "누군가 나를 직접 선택(YES)했다면? VIP 매니저가 흥분과 정중함을 담아 연결을 요청드리며 프로필을 즉시 오픈해 드립니다." },
+          { step: "STEP 04", title: "방 이동 없는 듀얼 클로징", desc: "결제를 위해 번거롭게 다른 방으로 넘기지 않습니다. 마지막 'YES' 호감을 받아낸 매니저가 해당 톡방에서 즉시 과금 및 만남 일정을 조율합니다." }
+        ].map((item, idx) => (
+          <div key={idx} className="bg-white p-8 md:p-10 rounded-3xl border border-[#F0EBEB] shadow-sm flex flex-col">
+            <span className="text-[#FF2E63] font-black text-[14px] mb-3">{item.step}</span>
+            <h3 className="font-bold text-[22px] text-[#4A3B3D] mb-4">{item.title}</h3>
+            <p className="text-[#8C7A7D] text-[15px] md:text-[16px] leading-[1.6] break-keep">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-[#322729] p-10 md:p-16 rounded-[3rem] text-center text-white shadow-xl relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#FF2E63]/20 rounded-full blur-2xl"></div>
+        <ShieldAlert className="w-14 h-14 text-[#FF2E63] mx-auto mb-6 relative z-10" />
+        <h3 className="font-black text-[24px] md:text-[34px] mb-6 relative z-10 tracking-tight">"만남 무산 시, 환불 및 재매칭 보장"</h3>
+        <p className="text-white/80 text-[16px] md:text-[18px] leading-[1.8] break-keep relative z-10">
+          만남이 성사되어 결제를 완료하셨더라도 걱정하지 마세요.<br className="hidden md:block"/>
+          결제 후 상대방의 일방적인 잠수, 당일 노쇼(No-show) 등<br className="hidden md:block"/>
+          <span className="text-[#FF2E63] font-bold">정상적인 만남이 이루어지지 않았다면 환불 또는 무료 재매칭을 보장</span>합니다.
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-[#FDFBFB] text-[#222] font-sans selection:bg-rose-200">
+      
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4 md:py-5' : 'bg-transparent py-6 md:py-8'}`}>
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           {currentPage === 'home' ? (
@@ -539,6 +628,7 @@ export default function LandingPage() {
       {currentPage === 'membership' && renderMembership()}
       {currentPage === 'apply' && renderApplyForm()}
 
+      {/* 🚀 전 페이지 공통 하단 유도 (신청 폼 화면일 땐 숨김) */}
       {currentPage !== 'apply' && (
         <section className="py-28 bg-gradient-to-b from-[#FFF5F7] to-[#FFF0F2] text-center px-6 border-t border-[#FFF0F2]">
           <h2 className="text-[32px] md:text-[46px] font-black text-[#4A3B3D] mb-6 tracking-tight">리스크 없이, 진짜 인연을 만나세요</h2>
@@ -549,6 +639,7 @@ export default function LandingPage() {
         </section>
       )}
 
+      {/* Footer */}
       <footer className="w-full bg-[#FAFAFA] pt-20 pb-28 md:pb-16 px-6 text-[#A69C9E] text-[14px] border-t border-[#F0EBEB]">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
@@ -564,6 +655,7 @@ export default function LandingPage() {
         </div>
       </footer>
 
+      {/* 모바일 전용 하단 고정 신청 버튼 (신청 폼 화면일 땐 숨김) */}
       {currentPage !== 'apply' && (
         <div className="fixed bottom-0 left-0 w-full p-4 bg-white/90 backdrop-blur-md border-t border-[#F0EBEB] md:hidden z-50">
           <button onClick={() => navigateTo('apply')} className="w-full bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white py-4 rounded-xl text-[16px] font-bold shadow-lg flex justify-center items-center">
