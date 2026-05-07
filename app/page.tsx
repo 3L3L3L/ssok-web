@@ -22,6 +22,11 @@ export default function LandingPage() {
   const [formPhone, setFormPhone] = useState('');
   const [formKakao, setFormKakao] = useState('');
 
+  // 🚀 휴대폰 인증 관련 상태 변수들
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [verifyCode, setVerifyCode] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -33,17 +38,51 @@ export default function LandingPage() {
     setCurrentPage(page);
   };
 
+  // 📱 인증요청 버튼 클릭 시
+  const handleSendCode = () => {
+    if (formPhone.length < 10) {
+      alert("올바른 휴대폰 번호를 입력해주세요.");
+      return;
+    }
+    // TODO: 실제 서버 연동 시 이곳에 SMS 발송 API 호출 코드가 들어갑니다.
+    alert(`${formPhone} 번호로 인증번호가 발송되었습니다.\n(테스트용 인증번호: 1234)`);
+    setIsCodeSent(true);
+  };
+
+  // 📱 인증확인 버튼 클릭 시
+  const handleVerifyCode = () => {
+    if (verifyCode === '1234') { // 테스트용 인증번호
+      alert("인증이 완료되었습니다.");
+      setIsVerified(true);
+    } else {
+      alert("인증번호가 일치하지 않습니다. 다시 확인해주세요.");
+    }
+  };
+
+  // ✅ 최종 제출 버튼 클릭 시
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(!formName || !formAge || !formGender || !formPhone) {
       alert("필수 항목을 모두 입력해 주세요.");
       return;
     }
-    // TODO: 나중에 여기에 백엔드 서버로 데이터 보내는 코드 추가
+    if (!isVerified) {
+      alert("휴대폰 번호 인증을 먼저 완료해 주세요.");
+      return;
+    }
+    
+    // TODO: 실제 에어테이블 저장 API 로직이 들어갈 자리입니다.
+    console.log("제출될 데이터:", { formName, formAge, formGender, formPhone, formKakao });
+    
     alert("상담 신청이 완료되었습니다! 전담 매니저가 곧 연락드릴 예정입니다.");
+    
+    // 폼 초기화 및 메인으로 이동
+    setFormName(''); setFormAge(''); setFormGender(null); setFormPhone(''); setFormKakao('');
+    setIsCodeSent(false); setVerifyCode(''); setIsVerified(false);
     navigateTo('home');
   };
 
+  // 후기 데이터
   const reviews = [
     {
       name: "이OO 회원님", info: "30대 초반 / 전문직",
@@ -72,11 +111,12 @@ export default function LandingPage() {
     }
   ];
 
+  // FAQ 데이터
   const faqs = [
     { q: "가입비나 매칭 비용은 어떻게 되나요?", a: "가입 및 프로필 검증, 매니저의 맞춤 큐레이션까지는 100% 무료입니다. 상호 호감이 확인되어 '실제 만남 약속'이 확정된 최종 시점에만 합리적인 매칭 비용이 발생합니다." },
     { q: "정말 제 사진이 다른 사람들에게 유출되지 않나요?", a: "네, 절대 불특정 다수에게 공개되지 않습니다. 담당 매니저가 회원님의 이상형 조건과 부합하는 소수의 검증된 분에게만 1:1로 정중하게 제안합니다." },
     { q: "연락을 바로바로 확인하기 힘든데 매칭 제안이 많이 오나요?", a: "걱정하지 않으셔도 됩니다. 회원님의 일상에 방해가 되지 않도록, 기계적인 대량 발송 대신 조건에 완벽히 부합하는 분이 있을 때만 엄선하여 프로필을 제안해 드립니다." },
-    { q: "결제 후 상대방이 잠수타거나 안 나오면 어떡하나요?", a: "결제 후 약속 당일 노쇼(No-show)나 7일 내 상대방의 일방적인 잠수 등 정상적인 만남이 이루어지지 않을 경우, 전액 환불 또는 1회 무료 재매칭을 보장해 드립니다." },
+    { q: "결제 후 상대방이 잠수타거나 안 나오면 어떡하나요?", a: "결제 후 약속 당일 노쇼(No-show)나 7일 내 상대방의 일방적인 잠수 등 정상적인 만남이 이루어지지 않을 경우, 전액 환불 또는 무료 재매칭을 보장해 드립니다." },
   ];
 
   // ==========================================
@@ -125,6 +165,7 @@ export default function LandingPage() {
       <section className="py-24 bg-[#322729] text-white relative overflow-hidden">
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
+
         <div className="max-w-6xl mx-auto px-6 relative z-10 text-center">
           <ShieldAlert className="w-14 h-14 text-[#FF2E63] mx-auto mb-6" />
           <h2 className="text-[32px] md:text-[46px] font-black tracking-tight mb-6">
@@ -270,13 +311,14 @@ export default function LandingPage() {
   );
 
   // ==========================================
-  // 📝 신규: 내부 신청 폼(Form) 상세 페이지
+  // 📝 내부 신청 폼(Form) 상세 페이지 (인증 기능 포함)
   // ==========================================
   const renderApplyForm = () => (
     <div className="pt-36 pb-28 px-6 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-500">
-      <div className="bg-white p-8 md:p-12 rounded-[2rem] border border-[#F0EBEB] shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+      <div className="bg-white p-8 md:p-12 rounded-[2rem] border border-[#F0EBEB] shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A]"></div>
         <h2 className="text-[28px] md:text-[36px] font-black text-[#4A3B3D] text-center mb-10 leading-tight">
-          상담을 위한 정보들<br />입력해 주세요.
+          매니저 상담을 위한<br />정보를 입력해 주세요.
         </h2>
         
         <form onSubmit={handleSubmit} className="space-y-8">
@@ -288,7 +330,7 @@ export default function LandingPage() {
               placeholder="이름을 입력해주세요" 
               value={formName} 
               onChange={(e) => setFormName(e.target.value)}
-              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] focus:ring-2 focus:ring-rose-100 outline-none transition-all placeholder:text-[#A69C9E]"
+              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]"
             />
           </div>
 
@@ -300,7 +342,7 @@ export default function LandingPage() {
               placeholder="숫자만 입력 (예: 31)" 
               value={formAge} 
               onChange={(e) => setFormAge(e.target.value)}
-              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] focus:ring-2 focus:ring-rose-100 outline-none transition-all placeholder:text-[#A69C9E]"
+              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]"
             />
           </div>
 
@@ -325,21 +367,47 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* 4. 휴대폰 번호 */}
+          {/* 4. 휴대폰 번호 & 인증 시스템 */}
           <div>
             <label className="block text-[15px] font-bold text-[#4A3B3D] mb-3">휴대폰 번호 <span className="text-[#FF2E63]">*</span></label>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-3">
               <input 
                 type="tel" 
                 placeholder="010-0000-0000" 
                 value={formPhone} 
                 onChange={(e) => setFormPhone(e.target.value)}
-                className="flex-1 p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] focus:ring-2 focus:ring-rose-100 outline-none transition-all placeholder:text-[#A69C9E]"
+                disabled={isVerified}
+                className="flex-1 p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E] disabled:bg-gray-100 disabled:text-gray-400"
               />
-              <button type="button" className="px-6 rounded-xl bg-[#4A3B3D] text-white font-bold hover:bg-[#322729] transition-colors shrink-0">
-                인증요청
+              <button 
+                type="button" 
+                onClick={handleSendCode}
+                disabled={isVerified}
+                className={`px-6 rounded-xl font-bold transition-colors shrink-0 ${isVerified ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#4A3B3D] text-white hover:bg-[#322729]'}`}
+              >
+                {isVerified ? "인증완료" : "인증요청"}
               </button>
             </div>
+
+            {/* 인증번호 입력 칸 (문자 발송 시에만 등장) */}
+            {isCodeSent && !isVerified && (
+              <div className="flex gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                <input 
+                  type="text" 
+                  placeholder="인증번호 4자리 입력 (테스트: 1234)" 
+                  value={verifyCode}
+                  onChange={(e) => setVerifyCode(e.target.value)}
+                  className="flex-1 p-4 rounded-xl border border-[#FF2E63] bg-[#FFF0F2] text-[#FF2E63] font-bold outline-none placeholder:text-rose-300"
+                />
+                <button 
+                  type="button" 
+                  onClick={handleVerifyCode}
+                  className="px-6 rounded-xl bg-[#FF2E63] text-white font-bold hover:bg-[#E01E4D] transition-colors shrink-0"
+                >
+                  인증확인
+                </button>
+              </div>
+            )}
           </div>
 
           {/* 5. 카카오톡 아이디 */}
@@ -350,7 +418,7 @@ export default function LandingPage() {
               placeholder="카톡 아이디 입력" 
               value={formKakao} 
               onChange={(e) => setFormKakao(e.target.value)}
-              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] focus:ring-2 focus:ring-rose-100 outline-none transition-all placeholder:text-[#A69C9E]"
+              className="w-full p-4 rounded-xl border border-[#E5E0E0] bg-[#FAFAFA] focus:bg-white focus:border-[#FF2E63] outline-none transition-all placeholder:text-[#A69C9E]"
             />
           </div>
 
@@ -556,7 +624,7 @@ export default function LandingPage() {
       {currentPage === 'membership' && renderMembership()}
       {currentPage === 'apply' && renderApplyForm()}
 
-      {/* 🚀 전 페이지 공통 하단 유도 (신청 폼은 예외 처리) */}
+      {/* 🚀 전 페이지 공통 하단 유도 (신청 폼 화면일 땐 숨김) */}
       {currentPage !== 'apply' && (
         <section className="py-28 bg-gradient-to-b from-[#FFF5F7] to-[#FFF0F2] text-center px-6 border-t border-[#FFF0F2]">
           <h2 className="text-[32px] md:text-[46px] font-black text-[#4A3B3D] mb-6 tracking-tight">리스크 없이, 진짜 인연을 만나세요</h2>
@@ -583,7 +651,7 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* 모바일 전용 하단 고정 신청 버튼 */}
+      {/* 모바일 전용 하단 고정 신청 버튼 (신청 폼 화면일 땐 숨김) */}
       {currentPage !== 'apply' && (
         <div className="fixed bottom-0 left-0 w-full p-4 bg-white/90 backdrop-blur-md border-t border-[#F0EBEB] md:hidden z-50">
           <button onClick={() => navigateTo('apply')} className="w-full bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white py-4 rounded-xl text-[16px] font-bold shadow-lg flex justify-center items-center">
