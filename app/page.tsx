@@ -7,7 +7,7 @@ import {
   FileText, Building2, GraduationCap, UserCheck, Briefcase,
   CalendarClock, ShieldAlert, Wallet, RefreshCcw, Quote,
   EyeOff, UserSearch, ThumbsUp, CalendarRange, Cpu, Users,
-  Zap, BellRing, UserPlus
+  Zap, BellRing
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -35,7 +35,7 @@ export default function LandingPage() {
     {
       name: "이OO 회원님", info: "30대 초반 / 전문직",
       img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
-      text: "단일 매니저가 아니라 안내, 추천, VIP 단계별로 매니저분들이 배정되어 체계적으로 관리받는 느낌이었습니다. 무엇보다 제 사진이 앱에 유출되지 않는다는 점이 제일 안심됐습니다."
+      text: "결정사의 기계적인 스펙 매칭에 지쳤었는데, 연애 코칭 경험이 풍부한 매니저분들이 배정되어 제 가치관을 완벽히 분석해주셨어요. 사진이 무분별하게 유출되지 않는다는 점이 제일 안심됐습니다."
     },
     {
       name: "김OO 회원님", info: "30대 중반 / IT 사업가",
@@ -50,16 +50,16 @@ export default function LandingPage() {
     {
       name: "최OO 회원님", info: "30대 초반 / 공기업",
       img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=150",
-      text: "밤늦게 알람이 울리지 않고 매일 저녁 8시에만 일괄로 호감을 확인할 수 있는 프라이버시 케어가 최고입니다. VIP 매니저님이 등판하는 순간은 정말 기분 좋은 서프라이즈였어요."
+      text: "밤늦게 알람이 울리지 않고 매일 저녁 8시에만 일괄로 호감을 확인할 수 있는 프라이버시 케어가 최고입니다. 전문 VIP 매니저님이 등판하는 순간은 정말 서프라이즈였어요."
     },
     {
       name: "정OO 회원님", info: "30대 후반 / 금융권",
       img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150",
-      text: "처음 가입할 때 여러 명을 한꺼번에 친추할 필요 없이, 딱 저에게 보상이 주어지는 필요한 타이밍에만 담당 매니저가 연결되어 심리적 부담이 전혀 없었습니다."
+      text: "단순 알바생이 아니라 진짜 연애 전문가들이 1:1로 붙어주는 느낌이었습니다. 딱 저에게 필요한 타이밍에만 매니저가 소통해주어 심리적 부담이 전혀 없었습니다."
     }
   ];
 
-  // FAQ 데이터 배열 (고객의 남은 의심을 없애는 핵심 섹션)
+  // FAQ 데이터 배열
   const faqs = [
     { q: "가입비나 매칭 비용은 어떻게 되나요?", a: "가입 및 프로필 검증, 매니저의 맞춤 큐레이션까지는 100% 무료입니다. 상호 호감이 확인되어 '실제 만남 약속'이 확정된 최종 시점에만 합리적인 매칭 비용이 발생합니다." },
     { q: "정말 제 사진이 다른 사람들에게 유출되지 않나요?", a: "네, 절대 불특정 다수에게 공개되지 않습니다. 담당 매니저가 회원님의 이상형 조건과 부합하는 소수의 검증된 분에게만 1:1로 정중하게 제안합니다." },
@@ -84,10 +84,9 @@ export default function LandingPage() {
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E63] to-[#FF8FA3]">수준이 맞는 인연</span>을 만나세요.
         </h1>
         <p className="text-[16px] md:text-[20px] text-[#8C7A7D] max-w-2xl mx-auto mb-12 leading-[1.7] break-keep font-medium">
-          단일 매니저의 한계를 넘었습니다. 안내부터 맞춤 큐레이션, VIP 클로징까지<br className="hidden md:block" />
-          분야별 전문 매니저 팀이 단계별로 협업하여 당신의 인연을 책임집니다.
+          기계적인 알고리즘이 아닙니다. 남녀의 심리를 완벽히 분석하는<br className="hidden md:block" />
+          베테랑 연애 코칭 전문가 팀이 단계별로 협업하여 당신의 인연을 책임집니다.
         </p>
-        {/* 버튼 문구 수정 완 */}
         <button onClick={goToApp} className="bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white px-10 py-4 md:px-12 md:py-5 rounded-full text-[16px] md:text-[18px] font-bold shadow-[0_8px_25px_rgb(255,46,99,0.3)] hover:-translate-y-1 transition-all flex items-center justify-center group w-full sm:w-auto">
           매니저 상담 신청하기
           <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -114,7 +113,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 🚀 SSOK Guarantee (만남 보장) */}
+      {/* 🚀 SSOK Guarantee */}
       <section className="py-24 bg-[#322729] text-white relative overflow-hidden">
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
@@ -137,7 +136,7 @@ export default function LandingPage() {
                 <span className="text-[#FF2E63] font-black text-[28px] mr-3 tracking-tighter leading-none">01</span>
                 <span className="text-white font-black text-[22px] leading-none">가입비 0원</span>
               </div>
-              <p className="text-white/70 text-[15.5px] leading-[1.7] break-keep">안내 매니저 상담 및 1차 프로필 제안까지. 만남을 결정하기 전까지의 모든 과정은 100% 무료입니다.</p>
+              <p className="text-white/70 text-[15.5px] leading-[1.7] break-keep">매니저 상담, 서류 검증, 이상형 분석, 그리고 프로필 제안까지. 만남을 결정하기 전까지의 모든 과정은 100% 무료입니다.</p>
             </div>
             
             <div className="bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-[2rem] border border-white/10 hover:bg-white/10 transition-colors">
@@ -217,14 +216,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 상세페이지 라우팅 카드 */}
+      {/* 상세페이지 라우팅 카드 (연애 코칭 뉘앙스로 변경) */}
       <section className="py-28 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20">
             <h2 className="text-[32px] md:text-[44px] font-black text-[#4A3B3D] tracking-tight mb-5">
-              분야별 <span className="text-[#FF2E63]">전문 페르소나 팀</span>의 시너지
+              연애 코칭 <span className="text-[#FF2E63]">전문가 팀</span>의 시너지
             </h2>
-            <p className="text-[#8C7A7D] text-[16px] md:text-[18px]">단일 알바가 아닙니다. 역할이 부여된 각 단계별 전문가가 당신의 매칭을 책임집니다.</p>
+            <p className="text-[#8C7A7D] text-[16px] md:text-[18px]">수많은 남녀의 심리를 분석하고 성혼을 이끌어온 베테랑 전문가들이 당신의 매칭을 전담합니다.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -254,7 +253,7 @@ export default function LandingPage() {
               <div>
                 <CalendarClock className="w-12 h-12 text-rose-400 mb-6 group-hover:scale-110 transition-transform" />
                 <h3 className="text-[22px] md:text-[24px] font-black text-[#4A3B3D] mb-4 tracking-tight">STEP 3. VIP 컨시어지</h3>
-                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">이성이 나를 콕 집어 선택한 결정적 순간, VIP 매니저가 서프라이즈 등판하여 가장 높은 수락률로 성사를 이끌어냅니다.</p>
+                <p className="text-[#8C7A7D] leading-[1.7] text-[15px] md:text-[16px] mb-8 break-keep">이성이 나를 콕 집어 선택한 결정적 순간, 연애 전문가가 서프라이즈 등판하여 가장 높은 수락률로 성사를 이끌어냅니다.</p>
               </div>
               <div className="w-full bg-[#FFF5F7] text-[#FF2E63] py-4 rounded-xl font-bold flex items-center justify-center text-[16px] group-hover:bg-[#FF2E63] group-hover:text-white transition-colors duration-300">
                 마찰 제로 프로세스 보기 <ArrowRight className="w-5 h-5 ml-1.5 group-hover:translate-x-1 transition-transform" />
@@ -264,7 +263,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 🚀 랜딩페이지의 끝판왕: FAQ 섹션 추가 */}
+      {/* 🚀 랜딩페이지의 끝판왕: FAQ 섹션 */}
       <section className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -311,7 +310,7 @@ export default function LandingPage() {
         </h1>
         <p className="text-[16px] md:text-[18px] text-[#8C7A7D] leading-[1.7] break-keep font-medium max-w-2xl mx-auto">
           소개팅 앱의 허위 프로필, 결정사의 부풀려진 스펙에 지치셨나요?<br className="hidden md:block"/>
-          SSOK 안내 매니저팀은 국가 발급 증명서와 사원증 등 법적 효력이 있는 서류만을 취급하여 가장 확실하고 안전한 만남을 시작합니다.
+          SSOK 전담 매니저팀은 국가 발급 증명서와 사원증 등 법적 효력이 있는 서류만을 취급하여 가장 확실하고 안전한 만남을 시작합니다.
         </p>
       </div>
 
@@ -352,21 +351,21 @@ export default function LandingPage() {
   );
 
   // ==========================================
-  // 3️⃣ 매니저 시스템 상세 페이지
+  // 3️⃣ 매니저 시스템 상세 페이지 (연애 코칭 뉘앙스 반영)
   // ==========================================
   const renderManager = () => (
     <div className="pt-36 pb-28 px-6 max-w-5xl mx-auto animate-in slide-in-from-right-8 duration-500">
       <div className="text-center mb-20">
         <div className="inline-flex items-center px-4 py-1.5 bg-[#FFF0F2] text-[#FF2E63] rounded-full text-[13px] font-bold mb-6">
-          <Heart className="w-4 h-4 mr-2" /> Persona Matchmaker System
+          <Heart className="w-4 h-4 mr-2" /> Expert Matchmaker System
         </div>
         <h1 className="text-[36px] md:text-[56px] font-black text-[#4A3B3D] leading-[1.2] mb-6 tracking-tight break-keep">
           기계는 사람의 마음을 읽을 수 없습니다.<br />
-          <span className="text-[#FF2E63]">단계별 전문 매니저 큐레이션</span>
+          <span className="text-[#FF2E63]">연애 코칭 전문가의 1:1 큐레이션</span>
         </h1>
         <p className="text-[16px] md:text-[18px] text-[#8C7A7D] leading-[1.7] break-keep font-medium max-w-2xl mx-auto">
           말투, 웃음소리, 연애 가치관, 살아온 환경까지.<br className="hidden md:block"/>
-          수많은 매칭을 성사시킨 베테랑 추천팀과 VIP팀이 내부 데이터 시트를 기반으로 완벽한 타겟팅 매칭을 진행합니다.
+          수많은 성혼을 이끌어낸 베테랑 연애 전문가 팀이 내부 데이터베이스를 기반으로 완벽한 타겟팅 매칭을 진행합니다.
         </p>
       </div>
 
@@ -377,20 +376,20 @@ export default function LandingPage() {
             <Zap className="w-12 h-12 text-[#FF2E63] mb-6" />
             <h3 className="text-[24px] font-black mb-4 text-white">👨 남성 고객: 즉각적인 도파민</h3>
             <ul className="space-y-4 text-[16px] text-white/80 leading-relaxed break-keep">
-              <li>회원님을 '선택(YES)'한 여성이 생기면, 즉시 VIP 매니저 계정이 접속하여 남성분께 가장 빠른 알림 톡을 발송합니다. 기다림 없는 도파민을 경험하세요.</li>
+              <li>회원님을 '선택(YES)'한 여성이 생기면, 즉시 VIP 매니저가 연락드려 남성분께 가장 빠른 매칭 소식을 전해드립니다. 기다림 없는 매칭을 경험하세요.</li>
             </ul>
           </div>
           <div className="pt-4 md:pt-0 md:pl-4">
             <BellRing className="w-12 h-12 text-[#FF2E63] mb-6" />
             <h3 className="text-[24px] font-black mb-4 text-white">👩 여성 고객: 8 PM 프라이버시</h3>
             <ul className="space-y-4 text-[16px] text-white/80 leading-relaxed break-keep">
-              <li>일상 중의 무분별한 알람으로 인한 피로도를 막아드립니다. 도착한 호감 메시지는 철저히 안전하게 보관되며, 매일 저녁 8시에 VIP 매니저가 한 번에 일괄 전송해 드립니다.</li>
+              <li>일상 중의 무분별한 카톡 알람으로 인한 피로도를 막아드립니다. 도착한 호감 메시지는 철저히 안전하게 보관되며, 매일 저녁 8시에 전담 매니저가 한 번에 일괄 전송해 드립니다.</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <h2 className="text-[28px] md:text-[36px] font-black text-center text-[#4A3B3D] mb-12 tracking-tight">전담 페르소나가 제공하는 3가지 VIP 케어</h2>
+      <h2 className="text-[28px] md:text-[36px] font-black text-center text-[#4A3B3D] mb-12 tracking-tight">연애 전문가가 제공하는 3가지 VIP 케어</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="bg-[#FAFAFA] p-10 rounded-[2rem] border border-[#F0EBEB] hover:-translate-y-2 transition-transform duration-300">
           <UserSearch className="w-12 h-12 text-rose-400 mb-6" />
@@ -424,8 +423,8 @@ export default function LandingPage() {
         <span className="text-[#FF2E63]">합리적인 VIP 멤버십</span>
       </h1>
       <p className="text-[16px] md:text-[18px] text-[#8C7A7D] mb-20 leading-[1.7] break-keep font-medium">
-        초기 가입 시 여러 명을 한꺼번에 친추하게 만드는 귀찮은 숙제는 없앴습니다.<br className="hidden md:block"/>
-        고객에게 '보상'이 주어지는 결정적 타이밍에만 다음 단계의 매니저가 바톤을 이어받습니다.
+        가입비 명목으로 선결제를 요구하는 결혼정보회사와 다릅니다.<br className="hidden md:block"/>
+        초기 가입 시 여러 명을 한꺼번에 친추하게 만드는 귀찮은 숙제 없이, 보상이 주어지는 순간에만 다음 단계로 이동합니다.
       </p>
 
       {/* 프로세스 스텝 */}
@@ -460,7 +459,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#FDFBFB] text-[#222] font-sans selection:bg-rose-200">
       
-      {/* 🧭 공통 네비게이션 바 (버튼 문구 수정) */}
+      {/* 🧭 공통 네비게이션 바 */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4 md:py-5' : 'bg-transparent py-6 md:py-8'}`}>
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           {currentPage === 'home' ? (
@@ -472,7 +471,7 @@ export default function LandingPage() {
           )}
           
           <button onClick={goToApp} className="bg-[#4A3B3D] text-white px-6 py-3 rounded-full text-[14px] md:text-[15px] font-bold hover:bg-[#322729] transition-colors shadow-md">
-            무료 매니저 상담
+            매니저 상담 신청
           </button>
         </div>
       </nav>
@@ -483,10 +482,10 @@ export default function LandingPage() {
       {currentPage === 'manager' && renderManager()}
       {currentPage === 'membership' && renderMembership()}
 
-      {/* 🚀 전 페이지 공통 하단 유도 (버튼 문구 수정) */}
+      {/* 🚀 전 페이지 공통 하단 유도 */}
       <section className="py-28 bg-gradient-to-b from-[#FFF5F7] to-[#FFF0F2] text-center px-6 border-t border-[#FFF0F2]">
         <h2 className="text-[32px] md:text-[46px] font-black text-[#4A3B3D] mb-6 tracking-tight">리스크 없이, 진짜 인연을 만나세요</h2>
-        <p className="text-[16px] md:text-[20px] text-[#8C7A7D] mb-12 font-medium">가입비 0원. 전문 매니저 팀이 지금 바로 1:1 상담을 도와드립니다.</p>
+        <p className="text-[16px] md:text-[20px] text-[#8C7A7D] mb-12 font-medium">가입비 0원. 연애 코칭 전문가 팀이 지금 바로 1:1 상담을 도와드립니다.</p>
         <button onClick={goToApp} className="bg-gradient-to-r from-[#4A3B3D] to-[#322729] text-white px-12 py-5 md:px-14 md:py-6 rounded-full text-[18px] md:text-[20px] font-bold shadow-2xl hover:-translate-y-1 transition-all">
           매니저 상담 신청하기
         </button>
@@ -508,7 +507,7 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* 모바일 전용 하단 고정 신청 버튼 (버튼 문구 유지: 짧고 강렬함) */}
+      {/* 모바일 전용 하단 고정 신청 버튼 */}
       <div className="fixed bottom-0 left-0 w-full p-4 bg-white/90 backdrop-blur-md border-t border-[#F0EBEB] md:hidden z-50">
         <button onClick={goToApp} className="w-full bg-gradient-to-r from-[#FF2E63] to-[#FF5C8A] text-white py-4 rounded-xl text-[16px] font-bold shadow-lg flex justify-center items-center">
           매니저 상담 신청하기
