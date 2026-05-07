@@ -54,7 +54,7 @@ export default function LandingPage() {
     if (process.env.NEXT_PUBLIC_USE_SMS_AUTH !== 'true') {
       setIsCodeSent(true);
       setVerifyCode('000000');
-      alert('테스트 모드입니다. 인증번호 칸에 000000을 입력하거나 [인증확인]을 바로 눌러주세요.');
+      alert('인증번호 칸에 000000을 입력하거나 [인증확인]을 바로 눌러주세요.');
       return;
     }
     try {
@@ -79,7 +79,7 @@ export default function LandingPage() {
     if (process.env.NEXT_PUBLIC_USE_SMS_AUTH !== 'true') {
       if (verifyCode === '000000') {
         setIsVerified(true);
-        alert('테스트 인증이 완료되었습니다.');
+        alert('인증이 완료되었습니다.');
       } else {
         alert('인증번호가 일치하지 않습니다.');
       }
